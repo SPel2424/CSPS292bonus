@@ -1,0 +1,49 @@
+---
+title: "Pokemon project heatmap"
+output: html_document
+date: "2024-12-06"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r, include=TRUE}
+library(readxl)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r, include=TRUE}
+Pokemon<-read.csv("Data/Pokemon.csv")
+```
+
+```{r, include=TRUE}
+
+Typecombination <- data.frame()
+
+for (x in 1:length(Pokemon$type1)) {
+  if (!is.na(Pokemon$type2[x])) {
+    Typecombination <- rbind(Typecombination, data.frame(PrimaryType = Pokemon$type1[x], SecondaryType = Pokemon$type2[x]))
+  }
+  else {
+    Typecombination <- rbind(Typecombination, data.frame(PrimaryType = Pokemontypes$type1[x], SecondaryType = NA))
+  }
+}
+
+
+Typescount <- as.data.frame(table(Typecombination))
+
+
+ggplot(Typescount, aes(x = PrimaryType, y = SecondaryType, fill = Freq)) +
+  geom_tile(color = "black") +
+  labs(title = "Frequency of Primary and Secondary Type Combinations\n(Including Primary Only)",
+       x = "Primary Type",
+       y = "Secondary Type",
+       fill = "Count") +
+  scale_fill_gradient(low = "white", high = "navy") +
+  scale_y_discrete(labels=c("None","Bug","Dark","Dragon", "Electric","Fairy", "Fighting", "Fire", "Flying", "Ghost", "Grass", "Ground", "Ice", "Normal", "Poison", "Psychic", "Rock", "Steel", "Water"))+
+  theme(axis.text.x = element_text(angle = 35))
+```
