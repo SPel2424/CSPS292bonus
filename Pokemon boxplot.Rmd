@@ -1,0 +1,19 @@
+---
+title: "Pokemon boxplot"
+output: html_document
+date: "2024-12-06"
+---
+
+```{r, include=TRUE}
+library(readxl)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r, echo=TRUE}
+geom_boxplot(outlier.shape = NA) +
+            labs(title = "Attack Distribution by Primary Pokemon Type",
+                 x= "Primary Type",  y= "Attack Power")+
+            theme_minimal()+
+            theme(axis.text.x = element_text(angle=35),legend.position = "none")
+```
